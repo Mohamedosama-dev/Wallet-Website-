@@ -111,8 +111,8 @@ Contributions are welcome! If you'd like to improve the project, please follow t
 
 For questions or support, please contact:
 
-- **Your Name**: [your-email@example.com](mailto:mohamedosama7337@gmail.com)
-- **GitHub**: [https://github.com/your-username](https://github.com/Mohamedosama-dev)
+- **Your Name**: [mohamedosama7337@gmail.com](mailto:mohamedosama7337@gmail.com)
+- **GitHub**: [https://github.com/Mohamedosama-dev](https://github.com/Mohamedosama-dev)
 
 ---
 
