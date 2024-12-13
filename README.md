@@ -17,6 +17,8 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **Payment Integration**:
   - Support for PayPal payments.
   - Handle multi-currency transactions.
+  - nn
+  - gg
 
 - **User Interface**:
   - Responsive design for seamless use on desktops, tablets, and mobile devices.
