@@ -26,15 +26,15 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 
 - **Backend**: Python, Django
 - **Frontend**: HTML, CSS, JavaScript
-- **Database**: SQLite (or replace with your database choice if different)
-- **Payment Integration**: PayPal API
+- **Database**: SQLite 
+- **Payment Integration**: PayPal API,Real-Time Stock API, ExchangeRate-APi,ATM Locator (Overpass API
 
 ## Installation
 
 ### Prerequisites
 
 - Python 3.x installed
-- Virtual environment tool (optional but recommended)
+- Virtual environment tool 
 - Git
 
 ### Steps
@@ -42,15 +42,15 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/wallet-website.git
-   cd wallet-website
+   git clone https://github.com/Mohamedosama-dev/wallet-website.git
+   cd myproject
    ```
 
 2. **Set up a Virtual Environment**
 
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   source venv/bin/activate  
    ```
 
 3. **Install Dependencies**
