@@ -106,16 +106,13 @@ Contributions are welcome! If you'd like to improve the project, please follow t
 4. Push to the branch (`git push origin feature/your-feature-name`).
 5. Create a Pull Request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
 For questions or support, please contact:
 
-- **Your Name**: [your-email@example.com](mailto:your-email@example.com)
-- **GitHub**: [https://github.com/your-username](https://github.com/your-username)
+- **Your Name**: [your-email@example.com](mailto:mohamedosama7337@gmail.com)
+- **GitHub**: [https://github.com/your-username](https://github.com/Mohamedosama-dev)
 
 ---
 
