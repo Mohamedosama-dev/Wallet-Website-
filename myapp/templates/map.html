@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nearby ATM Locator</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h3>Nearby ATM Locator</h3>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map centered on Cairo, Egypt as a default view
+        const map = L.map('map').setView([30.0444, 31.2357], 13);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        /**
+         * Function to display the user's location on the map
+         * @param {float} lat - Latitude of the user
+         * @param {float} lon - Longitude of the user
+         */
+        function displayUserLocation(lat, lon) {
+            const userMarker = L.marker([lat, lon]).addTo(map)
+                .bindPopup("<b>Your Location</b>")
+                .openPopup();
+            map.setView([lat, lon], 15); // Center the map on user's location
+        }
+
+        /**
+         * Fetches nearby ATMs from the Django backend
+         * @param {float} lat - Latitude for the ATM search
+         * @param {float} lon - Longitude for the ATM search
+         */
+        async function fetchNearbyATMs(lat, lon) {
+            try {
+                const response = await fetch(`/nearby-atms/?latitude=${lat}&longitude=${lon}`);
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                const data = await response.json();
+
+                if (data.atms && data.atms.length > 0) {
+                    data.atms.forEach(atm => {
+                        L.marker([atm.lat, atm.lon]).addTo(map)
+                            .bindPopup(`<b>ATM</b><br>Operator: ${atm.operator}<br>Brand: ${atm.brand}`)
+                            .openPopup();
+                    });
+                } else {
+                    alert(data.message || "No ATMs found near your location.");
+                }
+            } catch (error) {
+                console.error("Error fetching ATMs:", error);
+                alert("Unable to retrieve ATMs. Please try again later.");
+            }
+        }
+
+        /**
+         * Locates the user and fetches nearby ATMs based on user's position
+         */
+        function locateUserAndFetchATMs() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async position => {
+                        const { latitude: lat, longitude: lon } = position.coords;
+
+                        // Display the user's location on the map
+                        displayUserLocation(lat, lon);
+
+                        // Fetch and display nearby ATMs
+                        await fetchNearbyATMs(lat, lon);
+                    },
+                    error => {
+                        console.error("Error fetching location:", error);
+                        alert("Unable to retrieve your location. Please check your settings.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Start the process of locating the user and fetching ATMs
+        locateUserAndFetchATMs();
+    </script>
+
+    <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+</body>
+</html>

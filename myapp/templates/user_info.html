@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Info</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        /* User Info Styles */
+        .user-info {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .user-info p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .user-info label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Back Link Styles */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #808080;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .user-info {
+                padding: 15px;
+            }
+
+            .user-info p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>User Information</h1>
+    
+    <!-- Vue app container -->
+    <div id="app">
+        <div class="user-info" v-if="user && wallet">
+            <p><label>Username:</label> {{ user.username }}</p>
+            <p><label>Phone:</label> {{ user.phone }}</p>
+            <p><label>Phone Credit:</label> {{ user.phone_credit }}</p>
+            <p><label>Balance:</label> {{ wallet.balance }}</p>
+        </div>
+        <div v-else>
+            <p>Loading...</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+    </div>
+
+    <!-- Include Vue.js and Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+   <script>
+    new Vue({
+        el: '#app',
+        data: {
+            user: null,
+            wallet: null,
+            error: null,
+            
+        },
+        mounted() {
+            this.fetchUserData();
+        },
+        methods: {
+            fetchUserData() {
+                const userId = {{ user_id }};  
+    
+                $.ajax({
+                    url: `/userinfo/${userId}/`,
+                    method: 'GET',
+                    success: (response) => {
+                        this.user = response.user;
+                        this.wallet = response.wallet;
+                       
+                    },
+                    error: (xhr, status, error) => {
+                        this.error = "Error fetching user info."; // Display error message
+                    
+                        console.error("Error fetching user info:", error);
+                    }
+                });
+            }
+        }
+    });
+</script> 
+</body>
+</html>
+
+{% endblock %}

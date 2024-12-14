@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recharge Phone</title>
+    {% load static %}
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling */
+            animation: fadeIn 2.5s ease-in-out; /* Fade-in effect */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Container for splitting page */
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1100px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.15s ease; /* Slide-in effect */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Image Section */
+        .image-section {
+            flex: 1;
+            background-image: url("{% static 'images/44.jpg' %}"); /* Replace with your recharge image */
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s; /* Smooth transform effect */
+        }
+
+        .container:hover .image-section {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        /* Form Section */
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fafc;
+            transition: background-color 0.3s; /* Smooth background color change */
+        }
+
+        .form-section:hover {
+            background-color: #e9ecef; /* Change background color on hover */
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: #007bff;
+            margin-bottom: 25px;
+            text-align: center;
+            animation: popIn 0.5s ease; /* Pop-in effect */
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 350px;
+            animation: fadeInUp 0.5s ease; /* Fade-up effect */
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Back Link */
+        .back-link {
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+        }
+
+        /* Message Display */
+        #response-message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-section {
+                height: 200px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            form {
+                width: 100%;
+            }
+
+            input, button {
+                padding: 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section (Left) -->
+        <div class="image-section"></div>
+
+        <!-- Form Section (Right) -->
+        <div class="form-section">
+            <h1>Recharge Phone Credit</h1>
+            <form id="recharge-phone-form" onsubmit="handleRecharge(event)">
+                <label for="target_phone">Phone Number:</label>
+                <input type="text" id="target_phone" name="target_phone" required>
+
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" step="0.01" required>
+
+                <button type="submit">Recharge</button>
+            </form>
+            <div id="response-message"></div>
+            <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

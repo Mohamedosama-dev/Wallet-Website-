@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Exchange Rates</title>
+    {% load static %}
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: #333;
+        }
+
+        /* Container Styling */
+        .container {
+            max-width: 500px;
+            width: 90%;
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #4e54c8;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+            text-align: left;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #4e54c8;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+            box-shadow: 0px 5px 15px rgba(78, 84, 200, 0.4);
+        }
+
+        button:hover {
+            box-shadow: 0px 8px 18px rgba(78, 84, 200, 0.6);
+        }
+
+        /* Converted Amount & Rates Styling */
+        h2 {
+            color: #4e54c8;
+            font-size: 20px;
+            margin-top: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .exchange-rate {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            color: #555;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Back Link Styling */
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4e54c8;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #8f94fb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Currency Exchange Rates Against EGP</h1>
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                <label for="amount">Amount in EGP:</label>
+                <input type="number" name="amount" step="any" required>
+
+                <label for="currency">Select Currency:</label>
+                <select name="currency" required>
+                    <option value="USD">US Dollar (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                    <option value="GBP">British Pound (GBP)</option>
+                    <option value="SAR">Saudi Riyal (SAR)</option>
+                    <option value="KWD">Kuwaiti Dinar (KWD)</option>
+                    <option value="AED">Emirati Dirham (AED)</option>
+                    <option value="CAD">Canadian Dollar (CAD)</option>
+                    <option value="AUD">Australian Dollar (AUD)</option>
+                    <option value="JPY">Japanese Yen (JPY)</option>
+                    <option value="CHF">Swiss Franc (CHF)</option>
+                    <option value="CNY">Chinese Yuan (CNY)</option>
+                    <option value="INR">Indian Rupee (INR)</option>
+                </select>
+
+                <button type="submit">Convert</button>
+            </form>
+
+            {% if converted_amount %}
+                <h2>Converted Amount:</h2>
+                <p>{{ amount }} EGP = {{ converted_amount }} {{ selected_currency }}</p>
+            {% endif %}
+
+            <h2>Exchange Rates:</h2>
+            <div class="exchange-rate">1 USD = {{ rates.USD }} EGP</div>
+            <div class="exchange-rate">1 EUR = {{ rates.EUR }} EGP</div>
+            <div class="exchange-rate">1 GBP = {{ rates.GBP }} EGP</div>
+            <div class="exchange-rate">1 SAR = {{ rates.SAR }} EGP</div>
+            <div class="exchange-rate">1 KWD = {{ rates.KWD }} EGP</div>
+            <div class="exchange-rate">1 AED = {{ rates.AED }} EGP</div>
+            <div class="exchange-rate">1 CAD = {{ rates.CAD }} EGP</div>
+            <div class="exchange-rate">1 AUD = {{ rates.AUD }} EGP</div>
+            <div class="exchange-rate">1 JPY = {{ rates.JPY }} EGP</div>
+            <div class="exchange-rate">1 CHF = {{ rates.CHF }} EGP</div>
+            <div class="exchange-rate">1 CNY = {{ rates.CNY }} EGP</div>
+            <div class="exchange-rate">1 INR = {{ rates.INR }} EGP</div>
+        {% endif %}
+        <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>

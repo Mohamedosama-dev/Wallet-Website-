@@ -1,0 +1,504 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Wallet App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+   <style>
+        /* Custom Styles */
+        :root {
+            --background-color: #f9f9f9; /* Light gray background */
+            --text-color: #333; /* Dark gray text */
+            --navbar-color: white; /* White navbar */
+            --navbar-text-color: black; /* Dark text */
+            --wallet-background: #cfe3ff; /* Light blue wallet */
+            --wallet-hover: #a0c4ff; /* Light blue on hover */
+            --coin-color: #ffcc00; /* Yellow coins */
+            --bottom-nav-color: #e0e0e0; /* Light gray */
+            --link-hover: #888; /* Darker gray on hover */
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            padding-bottom: 60px; /* Add padding to the bottom for footer */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: var(--navbar-color);
+        }
+
+        .navbar-brand, .nav-link {
+            color: var(--navbar-text-color) !important;
+            transition: color 0.3s;
+        }
+
+        .nav-link {
+            margin-right: 5px; /* Add space between buttons */
+        }
+
+        .nav-link:hover {
+            color: var(--link-hover) !important;
+        }
+
+        .button {
+            background-color: #c3e3b7; 
+            color: white; /* White text color */
+            padding: 8px 25px; /* Padding for button */
+            border-radius: 25px; /* Circular corners for a pill shape */
+            border: 2px solid white;
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline */
+            transition: background-color 0.3s; /* Transition for smooth hover effect */
+        }
+
+        .button:hover {
+            background-color: #ffffff; /* Darker green on hover */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 3em;
+            font-weight: bold;
+            font-weight: bold;
+            color: var(--text-color);
+
+          
+        }
+        .fancy-heading{
+/* font-family: 'Lucida Sans'; */
+
+    font-family: 'Georgia', serif; /* Use a more elegant font */
+    font-size: 2.5em; /* Increase font size */
+    color: #333; /* Darker gray color */
+    font-weight: bold; 
+
+        }
+
+        /* Wallet Styles */
+        .wallet {
+            width: 300px;
+            height: 200px;
+            background-color: #c3e3b7;
+            border-radius: 20px;
+            position: relative;
+            margin: 20px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        .wallet:hover {
+            background-color: var(--wallet-hover);
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .wallet::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 40px;
+            background-color: #b0bec5; /* Light gray for the base */
+            border-radius: 20px;
+        }
+
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--coin-color);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            animation: drop 1s forwards;
+            opacity: 1;
+        }
+
+        @keyframes drop {
+            0% {
+                top: -50px;
+                left: calc(50% - 15px);
+                opacity: 1;
+            }
+            100% {
+                top: 70px;
+                left: calc(50% - 15px);
+                opacity: 0;
+            }
+        }
+
+        /* Moving Images */
+        .moving-image {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            animation: moveImage 5s linear infinite;
+        }
+
+        @keyframes moveImage {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            background-color: var(--bottom-nav-color);
+            color: var(--text-color);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease; /* Smooth transition for footer */
+        }
+
+        .bottom-nav.hidden {
+            transform: translateY(100%); /* Hide footer */
+        }
+
+        .bottom-nav a {
+            color: var(--text-color);
+            margin: 0 15px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .bottom-nav a:hover {
+            color: var(--link-hover);
+        }
+
+        .bottom-nav p {
+            margin-bottom: 5px;
+        }
+
+    
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-weight: bold;
+                font-size: 2.5em;
+            }
+
+            .wallet {
+                width: 80%;
+            }
+
+            .bottom-nav a {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+.new-section {
+    background-color: #F0F3F5;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+
+.new-section h2 {
+    font-size: 2.5em; /* Adjust size as needed */
+    margin-bottom: 20px;
+    color: var(--text-color); /* Use your existing color variable */
+}
+
+.new-section img {
+    width: 30%; /* Adjust this percentage to make the image smaller */
+    max-width: 300px; /* You can set a max width in pixels if needed */
+    height: auto; /* Maintain aspect ratio */
+    margin: 10px 0;
+}
+
+.new-section p {
+    font-size: 1.2em; /* Adjust size as needed */
+    color: var(--text-color); /* Use your existing color variable */
+}
+
+        }
+
+
+
+         /* Features Section Styles */
+    .features-section {
+        background-color: var(--background-color);
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+
+    .zk {
+        background-color:#F0F3F5; 
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .features-title {
+     font-family: 'Georgia', serif;/* Use a more elegant font */
+    font-size: 2.5em; /* Increase font size */
+    color: #333; /* Darker gray color */
+    font-weight: bold; 
+    
+    }
+
+    .features-container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap; /* For responsive layout */
+        gap: 20px; /* Add spacing between items */
+    }
+
+    .feature-item {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        width: 200px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-10px); /* Slight lift effect on hover */
+    }
+
+    .feature-icon {
+        width: 170px;
+        height: 95px;
+        margin-bottom: 15px;
+    }
+
+    .feature-item h3 {
+        font-size: 1.2em;
+        color: var(--text-color);
+        margin-bottom: 10px;
+    }
+
+    .feature-item p {
+        font-size: 1em;
+        color: var(--link-hover); /* Slightly lighter text for description */
+    }
+
+    @media (max-width: 768px) {
+        .feature-item {
+            width: 45%; /* Half-width on smaller screens */
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .feature-item {
+            width: 100%; /* Full width on very small screens */
+        }
+    }
+    
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'images/5.jpg' %}" alt="Wallet Logo" style="width: 40px; height: 40px; margin-right: 15px;">Wallet App
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link button" href="{% url 'sign_up' %}">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link button" href="{% url 'sign_in' %}">Sign In</a>
+                </li>
+          
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <!-- Main Content -->
+    <h1   class="fancy-heading" >Welcome to the Wallet App</h1>
+    <div class="wallet" id="wallet" onclick="toggleWallet()">
+        <div class="coin" style="animation-delay: 0s;"></div>
+        <div class="coin" style="animation-delay: 0.2s;"></div>
+        <div class="coin" style="animation-delay: 0.4s;"></div>
+        <div class="coin" style="animation-delay: 0.6s;"></div>
+        <div class="coin" style="animation-delay: 0.8s;"></div>
+    </div>
+    <!-- Moving Images -->
+    <img src="{% static 'images/5.jpg' %}" class="moving-image" style="top: 100px; left: -100px;">
+    <img src="{% static 'images/11.png' %}" class="moving-image" style="top: 250px; left: -100px; animation-delay: 2s;">
+    
+    <img src="{% static 'images/12.png' %}" class="moving-image" style="bottom: 250px; right: -100px; animation-delay: 2s;">
+
+
+    <div class="new-section" style="background-color: #F0F3F5; padding: 40px 20px; display: flex; align-items: center; text-align: left; opacity: 0; transform: translateY(20px); animation: fadeIn 1s forwards; animation-delay: 0.3s;">
+        <img src="{% static 'images/3.png' %}" alt="Leading a Richer Life" style="width: 100%; max-width: 300px; height: auto; margin-right: 20px; transition: transform 0.3s;">
+        <div style="transform: translateX(-20px); animation: slideIn 0.5s forwards; animation-delay: 0.5s;">
+            <h2 style="font-family: 'Georgia', serif; font-size: 2em; font-weight: bold; color: #333;">Leading a Richer Life</h2>
+            <p style="font-family: 'Arial', sans-serif; font-size: 1.2em; color: #555;">The way to wealth is to learn something new every day.</p>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+            }
+        }
+    
+        .new-section img:hover {
+            transform: scale(1.05); 
+        }
+    </style>
+    
+
+    <div class="features-section">
+        <h2 class="features-title">Wallet APP Helps You:</h2>
+        <div class="features-container">
+            <div class="feature-item">
+                <img src="{% static 'images/13.png' %}" alt="Ask the Questions" class="feature-icon">
+                <h3>Deposit & withdraw</h3>
+                <p>Handled deposit and withdrawal transactions efficiently</p>
+            </div>
+            <div class="feature-item">
+                <img src="{% static 'images/14.jpg' %}" alt="See the Data" class="feature-icon">
+                <h3>Trasnfer Money</h3>
+                <p>Facilitated secure money transfer transactions.</p>
+            </div>
+
+
+            <div class="feature-item">
+                <img src="{% static 'images/25.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Transfer to charity</h3>
+                <p>Facilitated charity fund transfers.</p>
+            </div>
+            <div class="feature-item">
+                <img src="{% static 'images/20.jpg' %}" alt="Be Efficient" class="feature-icon">
+                <h3>Recharge Phone</h3>
+                <p>Processed phone credit recharge.</p>
+            </div>
+            <div class="feature-item">
+                <img src="{% static 'images/21.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Pay service</h3>
+                <p>Handled service payment transactions.</p>
+            </div>
+
+            <div class="feature-item">
+                <img src="{% static 'images/26.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Show transactions</h3>
+                <p>Displayed transaction history details.</p>
+            </div>
+            
+        </div>
+    </div>
+
+
+
+
+    
+    
+    <div class="zk">
+        <h2 class="features-title">Why You Use Wallet APP:</h2>
+        <div class="features-container">
+            <div class="feature-item">
+                <img src="{% static 'images/47.jpg' %}" alt="Ask the Questions" class="feature-icon">
+                <h3>Security</h3>
+                <p>Protects sensitive financial information</p>
+            </div>
+            <div class="feature-item">
+                <img src="{% static 'images/52.jpg' %}" alt="See the Data" class="feature-icon">
+                <h3>Efficiency</h3>
+                <p>Fast and easy transactions.</p>
+            </div>
+
+
+            <div class="feature-item">
+                <img src="{% static 'images/49.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Financial control</h3>
+                <p>Monitor spending and balance in real time.</p>
+            </div>
+            <div class="feature-item">
+                <img src="{% static 'images/50.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Cashless</h3>
+                <p>Reduces the need to carry cash.</p>
+            </div>
+
+
+            <div class="feature-item">
+                <img src="{% static 'images/51.jpg' %}" alt="Have the Answers" class="feature-icon">
+                <h3>Versatility</h3>
+                <p> Supports multiple services like bill payments and money transfers.</p>
+            </div>
+
+
+
+
+      
+            
+        </div>
+    </div>
+
+
+
+
+
+    <div class="bottom-nav">
+        <p>
+            <a href="https://facebook.com" target="_blank" style="color: #1877F2;"><i class="fab fa-facebook"></i> Facebook</a> |
+            <a href="https://gmail.com" target="_blank" style="color: #EA4335;"><i class="fas fa-envelope"></i> Gmail</a> |
+            <a href="https://wa.me/your-whatsapp-number" target="_blank" style="color: #25D366;"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </p>
+        <p>© Wallet App. All rights reserved to ET3 Software.</p>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleWallet() {
+            const wallet = document.getElementById('wallet');
+            wallet.classList.toggle('opened');
+        }
+    </script>
+
+</body>
+</html>

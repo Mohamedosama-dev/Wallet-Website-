@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer to Charity</title>
+    {% load static %}
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling */
+            animation: fadeIn 2.5s ease-in-out; /* Fade-in effect for body */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Container for splitting page */
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1100px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.15s ease; /* Slide-in effect for container */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Image Section */
+        .image-section {
+            flex: 1;
+            background-image: url("{% static 'images/39.jpg' %}"); /* Replace with a relevant charity image */
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s; /* Smooth transform effect */
+        }
+
+        .container:hover .image-section {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        /* Form Section */
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fafc;
+            transition: background-color 0.3s; /* Smooth background color change */
+        }
+
+        .form-section:hover {
+            background-color: #e9ecef; /* Change background color on hover */
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: red;
+            margin-bottom: 25px;
+            text-align: center;
+            animation: popIn 0.5s ease; /* Pop-in effect for header */
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 350px;
+            animation: fadeInUp 0.5s ease; /* Fade-up effect for form */
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        select, input {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s; /* Smooth border color change */
+        }
+
+        input:focus, select:focus {
+            border-color: #4CAF50; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            padding: 12px;
+            background-color: red;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth background color and transform */
+        }
+
+        button:hover {
+            background-color: black;
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+
+        /* Back Link */
+        .back-link {
+            margin-top: 15px;
+            color: red;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .back-link:hover {
+            color: #155a8a;
+        }
+
+        /* Success Message Styles */
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Error Message Styles */
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-section {
+                height: 200px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            form {
+                width: 100%;
+            }
+
+            input, select, button {
+                padding: 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section (Left) -->
+        <div class="image-section"></div>
+
+        <!-- Form Section (Right) -->
+        <div class="form-section">
+            <h1>Transfer to Charity</h1>
+
+            <!-- Display the success or error message -->
+            <div id="response-message"></div>
+
+            <form id="charity-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Send</button>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('charity-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            // Extracting form values
+            const charitySelect = document.getElementById('id_charity'); // Assuming 'id_charity' is the ID of the charity select element
+            const amountInput = document.getElementById('id_amount'); // Assuming 'id_amount' is the ID of the amount input
+            const charityId = charitySelect.value;
+            const amount = parseFloat(amountInput.value);
+
+            // Example balance for demonstration (You can manage it as per your requirements)
+            let balance = 100; // Assume initial balance is 100
+            let successMessage = '';
+            let errorMessage = '';
+
+            // Validate amount and check if balance is sufficient
+            if (!charityId || isNaN(amount) || amount <= 0) {
+                errorMessage = 'Please select a charity and enter a valid amount.';
+            } else if (amount > balance) {
+                errorMessage = 'Insufficient balance.';
+            } else {
+                // Simulate a successful transfer
+                balance -= amount; // Deduct amount
+                successMessage = `Successfully sent ${amount} `; // Show new balance
+            }
+
+            // Display response message
+            const messageDiv = document.getElementById('response-message');
+            if (successMessage) {
+                messageDiv.innerHTML = `<p class="success-message">${successMessage}</p>`;
+            } else if (errorMessage) {
+                messageDiv.innerHTML = `<p class="error-message">${errorMessage}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

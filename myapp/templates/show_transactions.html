@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Transactions</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            text-align: center;
+            padding: 30px;
+            position: relative; /* To position the SVG background */
+            /* Hide overflow */
+            overflow-y: auto;
+        }
+
+        /* Decorative SVG Background */
+        .background-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind other elements */
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: #000; /* Changed blue to black */
+            margin-bottom: 20px;
+            padding: 15px; /* Padding around the heading */
+            border: 2px solid #007bff; /* Add border */
+            border-radius: 10px; /* Rounded corners */
+            animation: slideDown 0.5s ease; /* Slide down animation */
+            display: inline-block; /* Center align the heading with border */
+        }
+
+        /* Slide Down Animation */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1:hover {
+            color: #007bff; /* Change color on hover */
+        }
+
+        /* Box Styles */
+        .box {
+            display: inline-block;
+            width: 22%;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative; /* Relative positioning for pseudo-elements */
+            overflow: hidden; /* To hide pseudo-elements */
+        }
+
+        .box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Pseudo-Element for Box Hover Effect */
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.2); /* Light overlay */
+            transition: opacity 0.3s ease; /* Smooth opacity transition */
+            opacity: 0; /* Hidden by default */
+        }
+
+        .box:hover::before {
+            opacity: 1; /* Show on hover */
+        }
+
+        .deposit-withdrawal {
+            background-color: #007bff; /* Blue */
+        }
+
+        .transfer-recharge {
+            background-color: #28a745; /* Green */
+        }
+
+        .charity {
+            background-color: #dc3545; /* Red */
+        }
+
+        .service-payment {
+            background-color: #ffc107; /* Yellow */
+        }
+
+        /* Transaction Row Colors */
+        .transaction-deposit-withdrawal {
+            background-color: rgba(0, 123, 255, 0.1); /* Light Blue */
+        }
+
+        .transaction-transfer-recharge {
+            background-color: rgba(40, 167, 69, 0.1); /* Light Green */
+        }
+
+        .transaction-charity {
+            background-color: rgba(220, 53, 69, 0.1); /* Light Red */
+        }
+
+        .transaction-service-payment {
+            background-color: rgba(255, 193, 7, 0.1); /* Light Yellow */
+        }
+
+
+
+        
+        /* Button styling */
+        .ttt {
+            position: absolute;
+            top: 160px; /* Distance from top */
+            right: 30px;
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff; /* Blue background */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        /* Button hover effect */
+        .ttt:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slight zoom effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More intense shadow */
+        }
+
+        /* Button active (on click) effect */
+        .ttt:active {
+            background-color: #003d80; /* Even darker blue on click */
+            transform: scale(0.98); /* Slight shrink on click */
+        }
+
+        /* Optional for better button appearance on smaller screens */
+        @media (max-width: 600px) {
+            .ttt {
+                font-size: 16px;
+                padding: 12px 25px;
+            }
+        }
+        /* Table Styles */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none; /* Hide tables by default */
+            animation: fadeIn 0.5s ease; /* Fade-in animation */
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        thead {
+            background-color: #000; /* Changed blue to black */
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            font-size: 1.2em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Empty State */
+        td[colspan] {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            th, td {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+
+            .box {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative SVG Background -->
+    <svg class="background-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="#007bff" opacity="0.1" />
+        <circle cx="30" cy="30" r="20" fill="#28a745" opacity="0.1" />
+        <circle cx="70" cy="70" r="30" fill="#dc3545" opacity="0.1" />
+    </svg>
+
+    <h1>Show Transactions</h1>
+
+    <div class="box deposit-withdrawal" onclick="showTable('deposit-withdrawal-table')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+            <path d="M21 11h-6V4h-2v7H3v2h10v7h2v-7h6z"/>
+        </svg>
+        <h2 style="display: inline;">Deposit and Withdraw</h2>
+    </div>
+    
+    
+    <div class="box transfer-recharge" onclick="showTable('transfer-recharge-table')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+            <path d="M21 11h-6V4h-2v7H3v2h10v7h2v-7h6z"/>
+        </svg>
+        <h2 style="display: inline;">Transfer and Recharge Phone</h2>
+    </div>
+    
+    <div class="box charity" onclick="showTable('charity-table')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <h2 style="display: inline;">Charity Organization Transactions</h2>
+    </div>
+    
+    <div class="box service-payment" onclick="showTable('service-payment-table')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 10px;">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
+        </svg>
+        <h2 style="display: inline;">Service Payments</h2>
+    </div>
+    
+    <!-- Deposit and Withdrawal Transactions Table -->
+    <table id="deposit-withdrawal-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in deposit_withdrawal_transactions %}
+                <tr class="transaction-deposit-withdrawal">
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Transfer and Recharge Phone Transactions Table -->
+    <table id="transfer-recharge-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Recipient Phone</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transfer_recharge_transactions %}
+                <tr class="transaction-transfer-recharge">
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.phone_number }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Charity Transactions Table -->
+    <table id="charity-table">
+        <thead>
+            <tr>
+                <th>Charity Name</th>
+                <th>Amount</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in charity_transactions %}
+                <tr class="transaction-charity">
+                    <td>{{ transaction.charity.name }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No charity transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Service Payment Transactions Table -->
+    <table id="service-payment-table">
+        <thead>
+            <tr>
+                <th>Service Name</th>
+                <th>Amount</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in service_payment_transactions %}
+                <tr class="transaction-service-payment">
+                    <td>{{ transaction.service.name }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.timestamp }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No service payment transactions found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="{% url 'dashboard' %}">
+        <button class="ttt">Back me</button>
+    </form>
+    <script>
+        function showTable(tableId) {
+            // Hide all tables
+            const tables = document.querySelectorAll("table");
+            tables.forEach(table => {
+                table.style.display = "none"; // Set display to none
+            });
+
+            // Show the selected table
+            const selectedTable = document.getElementById(tableId);
+            if (selectedTable) {
+                selectedTable.style.display = "table"; // Show selected table
+            }
+        }
+    </script>
+</body>
+</html>

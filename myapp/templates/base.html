@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet App</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}"> <!-- Link to your main CSS file -->
+    <style>
+        /* Navigation Bar */
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fixed position for the navbar */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure navbar is always on top */
+            height: 45px; /* Reduced height */
+        }
+
+        /* Logo Styles */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px; /* Smaller logo size */
+            margin-right: 5px; /* Reduced spacing between logo and text */
+        }
+
+        .logo h1 {
+            font-size: 1.2em; /* Smaller font size */
+            color: #333;
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Nav Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Sign Out Button Styles for Navbar */
+        .nav-links form {
+            margin: 0;
+        }
+
+        .nav-links button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links button:hover {
+            background-color: #808080;
+        }
+
+        /* Main Content */
+        .content {
+            margin-top: 60px; /* Space for fixed navbar */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{% static 'images/3.png' %}" alt="logo" />
+            <h1>Wallet App</h1>
+        </div>
+        <div class="nav-links">
+            <!-- Sign Out Button in Navbar -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sign Out</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h2>Welcome to the Wallet App</h2>
+        <p>This is where you can manage your wallets, transactions, and more!</p>
+    </div>
+</body>
+</html>

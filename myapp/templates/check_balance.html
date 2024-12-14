@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Balance</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9fc;
+            color: #333;
+            text-align: center;
+            padding: 30px;
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: #000000; /* Changed to black */
+            margin-bottom: 20px;
+        }
+
+        /* Balance Info Styles */
+        .balance-info {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .balance-info p {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .balance-info a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #000000; /* Changed to black */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .balance-info a:hover {
+            background-color: #808080; /* Changed to gray on hover */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .balance-info {
+                padding: 15px;
+            }
+
+            .balance-info p {
+                font-size: 1.2em;
+            }
+
+            .balance-info a {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="app">
+        <h1>Check Balance</h1>
+        <div class="balance-info">
+            <p>Your current balance is: {{ balance }}</p>
+            <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                balance: null 
+            },
+            created() {
+                this.getBalance(request.user.id);
+            },
+            methods: {
+                getBalance(userId) {
+                    $.ajax({
+                        url: `http://localhost:8000/api/check_balance/${userId}/`,
+                        method: 'GET',
+                        success: (response) => {
+                            this.balance = response.balance; 
+                        },
+                        error: (xhr, status, error) => {
+                            console.error("There was an error fetching the balance:", error);
+                            this.balance = 'Error fetching balance'; 
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+      {% endblock %}
+</body>
+
+</html>

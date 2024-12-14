@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money</title>
+    <!-- Load static files -->
+    {% load static %}
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling */
+            animation: fadeIn 2.5s ease-in-out; /* Fade-in effect for body */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Container for splitting page */
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1100px;
+            height: 80vh;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.15s ease; /* Slide-in effect for container */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Image Section */
+        .image-section {
+            flex: 1;
+            background-image: url("{% static 'images/36.jpg' %}"); /* Static image */
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s; /* Smooth transform effect */
+        }
+
+        .container:hover .image-section {
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        /* Form Section */
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9fafc;
+            transition: background-color 0.3s; /* Smooth background color change */
+        }
+
+        .form-section:hover {
+            background-color: #e9ecef; /* Change background color on hover */
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5em;
+            color: green;
+            margin-bottom: 25px;
+            text-align: center;
+            animation: popIn 0.5s ease; /* Pop-in effect for header */
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 350px;
+            animation: fadeInUp 0.5s ease; /* Fade-up effect for form */
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s; /* Smooth border color change */
+        }
+
+        input:focus {
+            border-color: green; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            padding: 12px;
+            background-color: green;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth background color and transform */
+        }
+
+        button:hover {
+            background-color: #155a8a;
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+
+        /* Response Message */
+        .response-message {
+            margin-top: 15px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        /* Back Link */
+        .back-link {
+            margin-top: 15px;
+            color: green;
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        .back-link:hover {
+            color: #155a8a;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-section {
+                height: 200px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            form {
+                width: 100%;
+            }
+
+            input, button {
+                padding: 10px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Image Section (Left) -->
+        <div class="image-section"></div>
+
+        <!-- Form Section (Right) -->
+        <div class="form-section">
+            <h1>Transfer Money</h1>
+            <form id="transfer-form" method="POST">
+                {% csrf_token %}
+                <label>Recipient Phone:</label>
+                <input type="text" id="recipient-phone" name="target_phone" required>
+                <label>Amount:</label>
+                <input type="number" id="amount" name="amount" required>
+                <button type="submit">Transfer</button>
+                <div id="response-message" class="response-message"></div>
+            </form>
+            <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('transfer-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting
+
+            const recipientPhone = document.getElementById('recipient-phone').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const responseMessage = document.getElementById('response-message');
+
+            responseMessage.innerHTML = ''; // Clear previous messages
+
+            // Validate amount
+            if (amount <= 0) {
+                responseMessage.innerHTML = '<p style="color:red;">Amount must be greater than zero.</p>';
+                return;
+            }
+
+            // Mock validation for user existence (for demonstration purposes)
+            const userExists = recipientPhone === "01554166178"; 
+
+            if (!userExists) {
+                responseMessage.innerHTML = '<p style="color:red;">User with the specified phone number does not have a wallet</p>';
+                return;
+            }
+
+            // If validation passes
+            responseMessage.innerHTML = '<p style="color:green;">Successful transfer!</p>';
+        });
+    </script>
+</body>
+</html>

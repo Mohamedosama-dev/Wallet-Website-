@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Stocks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Resetting default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1c1f2b, #3b4252);
+            color: #eceff4;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Container Styling */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: #2e3440;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 2rem;
+            color: #88c0d0;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Search Input Styling */
+        #search {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px;
+            margin: 15px auto 30px;
+            border-radius: 8px;
+            border: 1px solid #4c566a;
+            background: #3b4252;
+            color: #eceff4;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.3s ease;
+        }
+
+        #search:focus {
+            outline: none;
+            border-color: #88c0d0;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4c566a;
+            color: #eceff4;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #3b4252;
+            color: #d8dee9;
+            transition: background-color 0.3s;
+        }
+
+        tr:hover td {
+            background-color: #434c5e;
+        }
+
+        /* Icon Styling */
+        .icon-up {
+            color: #a3be8c;
+            animation: rise 1s infinite alternate;
+        }
+        .icon-down {
+            color: #bf616a;
+            animation: fall 1s infinite alternate;
+        }
+
+        /* Animation Keyframes */
+        @keyframes rise {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(3px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Top Famous Stocks</h1>
+
+    <!-- Search Input Field -->
+    <input type="text" id="search" onkeyup="searchStocks()" placeholder="Search for stocks...">
+
+    <table id="stocksTable">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Price</th>
+                <th>Change</th>
+                <th>% Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.symbol }}</td>
+                <td>${{ stock.price }}</td>
+                <td>
+                    {% if stock.change >= 0 %}
+                        <i class="fas fa-arrow-up icon-up"></i> {{ stock.change }}
+                    {% else %}
+                        <i class="fas fa-arrow-down icon-down"></i> {{ stock.change }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if stock.percent_change >= 0 %}
+                        <span class="icon-up">{{ stock.percent_change }}%</span>
+                    {% else %}
+                        <span class="icon-down">{{ stock.percent_change }}%</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
+</div>
+
+<script>
+    function searchStocks() {
+        // Get the search input and filter value
+        var input = document.getElementById("search");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("stocksTable");
+        var tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows and hide those that don't match the search query
+        for (var i = 1; i < tr.length; i++) {
+            var td = tr[i].getElementsByTagName("td")[0];  // Search based on the first column (stock symbol)
+            if (td) {
+                var txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+</script>
+
+
+
+</body>
+</html>
