@@ -17,8 +17,8 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **Payment Integration**:
   - Support for PayPal payments.
   - Handle multi-currency transactions.
-  - nn
-  - gg
+  - Determines the location and comes up with the nearest ATM to the person
+  - Know famous stocks in the market
 
 - **User Interface**:
   - Responsive design for seamless use on desktops, tablets, and mobile devices.
@@ -29,7 +29,7 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **Backend**: Python, Django
 - **Frontend**: HTML, CSS, JavaScript
 - **Database**: SQLite 
-- **Payment Integration**: PayPal API,Real-Time Stock API, ExchangeRate-APi,ATM Locator (Overpass API
+- **Payment Integration**: PayPal API,Real-Time Stock API, ExchangeRate-APi,ATM Locator (Overpass API)
 
 ## Installation
 
