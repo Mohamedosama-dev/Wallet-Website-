@@ -1,4 +1,4 @@
-![freepik__candid-image-photography-natural-textures-highly-r__26163](https://github.com/user-attachments/assets/9a78d2dd-13b4-4e24-9814-761ba59b3ed5)
+![freepik__candid-image-photography-natural-textures-highly-r__5319](https://github.com/user-attachments/assets/7ea104f1-faa8-40b1-9fca-e550109ca0d3)
 # Wallet Website
 
 A robust and user-friendly Wallet Website built using **Python**, **Django**, **HTML**, **CSS**, and **JavaScript**. This platform allows users to manage their finances efficiently, offering features such as deposits, withdrawals, transfers, and more.
