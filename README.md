@@ -3,6 +3,7 @@
 A robust and user-friendly Wallet Website built using **Python**, **Django**, **HTML**, **CSS**, and **JavaScript**. This platform allows users to manage their finances efficiently, offering features such as deposits, withdrawals, transfers, and more.
 
 ## Features
+![Screenshot 2024-12-08 at 22-29-52 Facebook](https://github.com/user-attachments/assets/9a37da32-50b1-4e7a-9ce0-98711932ff3e)
 
 - **User Authentication**:
   - Secure login and registration.
