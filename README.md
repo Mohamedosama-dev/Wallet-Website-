@@ -53,7 +53,7 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 2. **Set up a Virtual Environment**
 
    ```bash
-   python -m venv venv
+   python -m venv myvenv
    source venv/bin/activate  
    ```
 
