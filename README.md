@@ -9,6 +9,9 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **Wallet Management**:
   - Deposit funds into the wallet.
   - Withdraw funds securely.
+  - Transfer to charity
+  - Recharge phone Balance
+  - Bay Bill
   - Transfer money to other users.
   - Track transaction history in a detailed ledger.
 
