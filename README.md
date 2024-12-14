@@ -31,6 +31,7 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **Frontend**: HTML, CSS, JavaScript
 - **Database**: SQLite 
 - **Payment Integration**: PayPal API,Real-Time Stock API, ExchangeRate-APi,ATM Locator (Overpass API)
+  ![1](https://github.com/user-attachments/assets/024f17cd-7d25-42f4-811b-63e283385454)
 
 ## Installation
 
