@@ -24,7 +24,7 @@ A robust and user-friendly Wallet Website built using **Python**, **Django**, **
 - **User Interface**:
   - Responsive design for seamless use on desktops, tablets, and mobile devices.
   - Clean and intuitive layout built with HTML, CSS, and JavaScript.
-    ![Screenshot 2024-12-14 at 22-38-44 Dashboard](https://github.com/user-attachments/assets/29c68262-e72c-452b-9e3f-4e1285903fe2)
+  ![Screenshot 2024-12-14 at 22-41-44 Dashboard](https://github.com/user-attachments/assets/f14b7a34-1df4-4580-8799-45e826298763)
 
 
 ## Technologies Used
